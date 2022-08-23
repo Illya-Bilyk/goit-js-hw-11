@@ -1,4 +1,4 @@
-// import './sass/main.scss';
+import './sass/main.scss';
 import { fetchImages } from './js/fetch-images';
 import { renderGallery } from './js/render-gallery';
 import { onScroll, onToTopBtn } from './js/scroll';
@@ -7,16 +7,19 @@ import SimpleLightbox from 'simplelightbox';
 
 import 'simplelightbox/dist/simple-lightbox.min.css';
 
-const searchForm = document.querySelector('#search-form');
-const gallery = document.querySelector('.gallery');
-const loadMoreBtn = document.querySelector('.btn-load-more');
 let query = '';
 let page = 1;
 let simpleLightBox;
 const perPage = 40;
 
-searchForm.addEventListener('submit', onSearchForm);
-loadMoreBtn.addEventListener('click', onLoadMoreBtn);
+const refs = {
+  searchForm: document.querySelector('#search-form'),
+  gallery: document.querySelector('.gallery'),
+  loadMoreBtn: document.querySelector('.btn-load-more'),
+};
+
+refs.searchForm.addEventListener('submit', onSearchForm);
+refs.loadMoreBtn.addEventListener('click', onLoadMoreBtn);
 
 onScroll();
 onToTopBtn();
@@ -26,8 +29,8 @@ function onSearchForm(e) {
   window.scrollTo({ top: 0 });
   page = 1;
   query = e.currentTarget.searchQuery.value.trim();
-  gallery.innerHTML = '';
-  loadMoreBtn.classList.add('is-hidden');
+  refs.gallery.innerHTML = '';
+  refs.loadMoreBtn.classList.add('is-hidden');
 
   if (query === '') {
     alertNoEmptySearch();
@@ -44,13 +47,13 @@ function onSearchForm(e) {
         alertImagesFound(data);
 
         if (data.totalHits > perPage) {
-          loadMoreBtn.classList.remove('is-hidden');
+          refs.loadMoreBtn.classList.remove('is-hidden');
         }
       }
     })
     .catch(error => console.log(error))
     .finally(() => {
-      searchForm.reset();
+      refs.searchForm.reset();
     });
 }
 
@@ -66,7 +69,7 @@ function onLoadMoreBtn() {
       const totalPages = Math.ceil(data.totalHits / perPage);
 
       if (page > totalPages) {
-        loadMoreBtn.classList.add('is-hidden');
+        refs.loadMoreBtn.classList.add('is-hidden');
         alertEndOfSearch();
       }
     })
