@@ -68,7 +68,7 @@ function onLoadMoreBtn() {
 
       const totalPages = Math.ceil(data.totalHits / perPage);
 
-      if (page > totalPages) {
+      if (page >= totalPages) {
         refs.loadMoreBtn.classList.add('is-hidden');
         alertEndOfSearch();
       }
